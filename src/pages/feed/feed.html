@@ -11,40 +11,50 @@
 </ion-header>
 
 <ion-content padding>
-   
-    <ion-card>
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-card *ngFor="let filme of listaFilmes"><!---Enquanto houver filmes ele repet o card-->
         <ion-item>
           <ion-avatar item-start>
             <img id="aumenta" src="../assets/imgs/avatar.png">
           </ion-avatar>
-          <h2 class="feed_title">{{variavel}}</h2>
-          <p class="feed_date">November 5, 1955</p>
+          <h2 class="feed_title">{{filme
+            .original_title}}</h2>
+          <p class="feed_date">{{filme.release_date}}</p>
         </ion-item>
        
-        <img src="../assets/imgs/veiculo.png">
+        <img [src]="'https://image.tmdb.org/t/p/w500/' + filme.backdrop_path">
       
         <ion-card-content>
-          <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+          <p>{{filme.overview}}</p>
         </ion-card-content>
       
         <ion-row>
           <ion-col>
             <button ion-button icon-start clear small>
               <ion-icon name="thumbs-up"></ion-icon>
-              <div>12 Likes</div>
+              <div>{{filme.genre_ids[0]}} Likes</div>
             </button>
           </ion-col>
           <ion-col>
             <button ion-button icon-start clear small>
               <ion-icon name="text"></ion-icon>
-              <div>4 Comments</div>
+              <div>{{obj_feed.comentarios}}Comments</div>
             </button>
           </ion-col>
           <ion-col align-self-center text-center>
             <ion-note>
-              11h ago
+              {{obj_feed.hora}}
             </ion-note>
           </ion-col>
         </ion-row>
+        <button ion-button block (click)="abrirDetalhes(filme)">
+          Detalhes
+        </button>
       </ion-card>
+      
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
 </ion-content>
